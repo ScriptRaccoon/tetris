@@ -1,4 +1,4 @@
-import { addNextPiece } from "./nextPiece.js";
+import { addNextPiece } from "./piece.js";
 import { addInfo } from "./info.js";
 import { addControls } from "./controls.js";
 

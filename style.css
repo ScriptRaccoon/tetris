@@ -25,6 +25,7 @@ header {
 #game {
     width: calc(var(--unit) * var(--width));
     margin: 0 auto;
+    /* overflow: hidden; */
 }
 
 #info {
