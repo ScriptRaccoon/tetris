@@ -5,53 +5,53 @@ const width = 12;
 const height = 25;
 const middle = Math.floor((width - 1) / 2);
 
-let currentTile = null;
+let currentPiece = null;
 let currentAngle = 0;
 
 let canMove = true;
 const moveSpeed = 100;
 
-const TILES = [
+const PIECES = [
     {
-        name: "tile-O",
+        name: "piece-O",
         coordinates: [],
     },
     {
-        name: "tile-I",
+        name: "piece-I",
         coordinates: [],
     },
     {
-        name: "tile-L",
+        name: "piece-L",
         coordinates: [],
     },
     {
-        name: "tile-J",
+        name: "piece-J",
         coordinates: [],
     },
     {
-        name: "tile-Z",
+        name: "piece-Z",
         coordinates: [],
     },
     {
-        name: "tile-S",
+        name: "piece-S",
         coordinates: [],
     },
 ];
 
-const TILE_NAMES = TILES.map((tile) => tile.name);
+const PIECE_NAMES = PIECES.map((piece) => piece.name);
 
 $(() => {
-    addRandomTile();
+    addRandompiece();
     addControls();
 });
 
-function addRandomTile() {
-    const tileName = randEl(TILE_NAMES);
+function addRandompiece() {
+    const pieceName = randEl(PIECE_NAMES);
     currentAngle = 0;
-    currentTile = $("<div></div>")
-        .addClass("tile")
-        .addClass("currentTile")
-        .addClass(tileName)
+    currentPiece = $("<div></div>")
+        .addClass("piece")
+        .addClass("currentPiece")
+        .addClass(pieceName)
         .css({
             left: middle * unit + "px",
             top: "0px",
@@ -59,33 +59,37 @@ function addRandomTile() {
         .appendTo("#game");
 }
 
-function moveCurrentTile(key) {
+function movecurrentPiece(key) {
     if (!canMove) return;
-    disableMove();
-    const currentLeft = parseInt(currentTile.css("left"));
-    const currentTop = parseInt(currentTile.css("top"));
+    const currentLeft = parseInt(currentPiece.css("left"));
+    const currentTop = parseInt(currentPiece.css("top"));
     if (key === "ArrowLeft") {
-        currentTile.animate({ left: currentLeft - unit }, moveSpeed, enableMove);
+        disableMove();
+        currentPiece.animate({ left: currentLeft - unit }, moveSpeed, enableMove);
     } else if (key === "ArrowRight") {
-        currentTile.animate({ left: currentLeft + unit }, moveSpeed, enableMove);
+        disableMove();
+        currentPiece.animate({ left: currentLeft + unit }, moveSpeed, enableMove);
     } else if (key === "ArrowDown") {
-        currentTile.animate({ top: currentTop + unit }, moveSpeed, enableMove);
+        disableMove();
+        currentPiece.animate({ top: currentTop + unit }, moveSpeed, enableMove);
     } else if (key === "ArrowUp") {
+        disableMove();
         // todo
-        currentTile.animate({ top: height * unit }, 2 * moveSpeed, () => {
+        currentPiece.animate({ top: height * unit }, 2 * moveSpeed, () => {
             enableMove();
-            addRandomTile();
+            addRandompiece();
         });
     } else if (key === " ") {
+        disableMove();
         currentAngle += 90;
-        currentTile.css({ transform: `rotate(${currentAngle}deg)` });
+        currentPiece.css({ transform: `rotate(${currentAngle}deg)` });
         setTimeout(enableMove, moveSpeed);
     }
 }
 
 function addControls() {
     $(window).on("keydown", (e) => {
-        moveCurrentTile(e.key);
+        movecurrentPiece(e.key);
     });
 }
 
@@ -97,12 +101,11 @@ function disableMove() {
     canMove = false;
 }
 
-// function rotateElement(element, angle, callback) {
-//     let currentAngle = parseInt(element.css("transform"));
-//     const steps = 100;
-//     for (let )
-//     currentAngle += angle/10;
-
-//     console.log(currentAngle);
-
-// }
+$("#infoButton").text("Show Keys");
+$("#infoButton").click(() => {
+    $("#keyInfos").toggle();
+    const text = $("#infoButton").text();
+    $("#infoButton").text(text == "Show Keys" ? "Hide Keys" : "Show Keys");
+    let opacity = parseInt($("main").css("opacity"));
+    $("main").css("opacity", 1.2 - opacity);
+});

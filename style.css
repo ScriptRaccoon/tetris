@@ -27,6 +27,49 @@ main {
     margin: 0 auto;
 }
 
+#info {
+    position: fixed;
+    top: 5px;
+    left: 5px;
+}
+
+/* info */
+
+#info ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+#info li {
+    margin: 2px 0px;
+}
+
+#infoButton {
+    opacity: 0.7;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    background-color: #444;
+    color: white;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+
+#infoButton:hover {
+    opacity: 1;
+}
+
+#keyInfos {
+    display: none;
+}
+
+.keySymbol {
+    text-align: center;
+    display: inline-block;
+    width: 50px;
+}
+
 /* game */
 
 #game {
@@ -36,37 +79,37 @@ main {
     position: relative;
 }
 
-/* tiles general */
+/* pieces general */
 
-.tile {
+.piece {
     transition: transform 100ms linear;
 }
 
-.tile,
-.tile::after,
-.tile::before {
+.piece,
+.piece::after,
+.piece::before {
     position: absolute;
     box-sizing: border-box;
 }
 
-.tile::after,
-.tile::before {
+.piece::after,
+.piece::before {
     content: "";
     background-color: inherit;
 }
 
-/* tile O */
+/* piece O */
 
-.tile-O {
+.piece-O {
     background-color: skyblue;
     border: var(--border) solid rgb(54, 113, 136);
     width: calc(2 * var(--unit));
     height: calc(2 * var(--unit));
 }
 
-/* tile I */
+/* piece I */
 
-.tile-I {
+.piece-I {
     background-color: rgb(233, 52, 36);
     border: var(--border) solid rgb(149, 8, 8);
     width: calc(1 * var(--unit));
@@ -74,16 +117,16 @@ main {
     transform-origin: var(--unit) calc(2 * var(--unit));
 }
 
-/* tile T  */
+/* piece T  */
 
-.tile-T {
+.piece-T {
     background-color: rgb(26, 161, 26);
     border: var(--border) solid rgb(11, 98, 11);
     width: calc(3 * var(--unit));
     height: calc(1 * var(--unit));
 }
 
-.tile-T::after {
+.piece-T::after {
     border-top: none;
     border-left: inherit;
     border-bottom: inherit;
@@ -94,16 +137,16 @@ main {
     width: calc(1 * var(--unit));
 }
 
-/* tile L */
+/* piece L */
 
-.tile-L {
+.piece-L {
     background-color: rgb(43, 43, 204);
     border: var(--border) solid rgb(27, 27, 133);
     width: calc(1 * var(--unit));
     height: calc(3 * var(--unit));
 }
 
-.tile-L::after {
+.piece-L::after {
     border-left: none;
     border-top: inherit;
     border-bottom: inherit;
@@ -114,9 +157,9 @@ main {
     top: calc(2 * var(--unit) - var(--border));
 }
 
-/* tile J */
+/* piece J */
 
-.tile-J {
+.piece-J {
     background-color: rgb(118, 43, 204);
     border: var(--border) solid rgb(62, 16, 116);
     width: calc(1 * var(--unit));
@@ -124,7 +167,7 @@ main {
     transform: translateX(var(--unit));
 }
 
-.tile-J::after {
+.piece-J::after {
     border-right: none;
     border-top: inherit;
     border-bottom: inherit;
@@ -135,9 +178,9 @@ main {
     top: calc(2 * var(--unit) - var(--border));
 }
 
-/* tile Z */
+/* piece Z */
 
-.tile-Z {
+.piece-Z {
     background-color: rgb(255, 166, 0);
     border: var(--border) solid rgb(202, 133, 4);
     width: calc(2 * var(--unit));
@@ -145,7 +188,7 @@ main {
     transform-origin: var(--unit) var(--unit);
 }
 
-.tile-Z::before {
+.piece-Z::before {
     border: inherit;
     width: calc(2 * var(--unit));
     height: calc(1 * var(--unit));
@@ -153,16 +196,16 @@ main {
     left: calc(var(--unit) - 1 * var(--border));
 }
 
-.tile-Z::after {
+.piece-Z::after {
     border: none;
     width: calc(1 * var(--unit) - 2 * var(--border));
     height: calc(2 * var(--unit) - 2 * var(--border));
     left: calc(var(--unit));
 }
 
-/* tile S */
+/* piece S */
 
-.tile-S {
+.piece-S {
     background-color: rgb(255, 217, 0);
     border: var(--border) solid rgb(195, 167, 5);
     width: calc(2 * var(--unit));
@@ -171,7 +214,7 @@ main {
     transform: translateX(var(--unit));
 }
 
-.tile-S::before {
+.piece-S::before {
     border: inherit;
     width: calc(2 * var(--unit));
     height: calc(1 * var(--unit));
@@ -179,7 +222,7 @@ main {
     left: calc(-1 * var(--unit) - 1 * var(--border));
 }
 
-.tile-S::after {
+.piece-S::after {
     border: none;
     width: calc(1 * var(--unit) - 2 * var(--border));
     height: calc(2 * var(--unit) - 2 * var(--border));
