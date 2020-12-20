@@ -1,0 +1,180 @@
+/* global styles */
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+
+:root {
+    --unit: 30px;
+    --border: 6px;
+    --width: 12;
+    --height: 25;
+}
+
+body {
+    margin: 0;
+    font-family: "Roboto Mono", sans-serif;
+    background-color: black;
+    color: white;
+}
+
+/* sections */
+
+header {
+    text-align: center;
+}
+
+main {
+    width: calc(var(--unit) * var(--width));
+    margin: 0 auto;
+}
+
+/* game */
+
+#game {
+    width: calc(var(--unit) * var(--width));
+    height: calc(var(--unit) * var(--height));
+    border: 1px solid #555;
+    position: relative;
+}
+
+/* tiles general */
+
+.tile,
+.tile::after,
+.tile::before {
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.tile::after,
+.tile::before {
+    content: "";
+    background-color: inherit;
+}
+
+/* tile B */
+
+.tile-B {
+    background-color: skyblue;
+    border: var(--border) solid rgb(54, 113, 136);
+    width: calc(2 * var(--unit));
+    height: calc(2 * var(--unit));
+}
+
+/* tile I */
+
+.tile-I {
+    background-color: rgb(233, 52, 36);
+    border: var(--border) solid rgb(149, 8, 8);
+    width: calc(1 * var(--unit));
+    height: calc(4 * var(--unit));
+}
+
+/* tile T  */
+
+.tile-T {
+    background-color: rgb(26, 161, 26);
+    border: var(--border) solid rgb(11, 98, 11);
+    width: calc(3 * var(--unit));
+    height: calc(1 * var(--unit));
+}
+
+.tile-T::after {
+    border-top: none;
+    border-left: inherit;
+    border-bottom: inherit;
+    border-right: inherit;
+    top: calc(var(--unit) - 2 * var(--border));
+    left: calc(-1 * var(--border) + var(--unit));
+    height: calc(1 * var(--unit) + var(--border));
+    width: calc(1 * var(--unit));
+}
+
+/* tile L */
+
+.tile-L {
+    background-color: rgb(43, 43, 204);
+    border: var(--border) solid rgb(27, 27, 133);
+    width: calc(1 * var(--unit));
+    height: calc(3 * var(--unit));
+}
+
+.tile-L::after {
+    border-left: none;
+    border-top: inherit;
+    border-bottom: inherit;
+    border-right: inherit;
+    height: calc(1 * var(--unit));
+    width: calc(1 * var(--unit) + var(--border));
+    left: calc(var(--unit) - 2 * var(--border));
+    top: calc(2 * var(--unit) - var(--border));
+}
+
+/* tile J */
+
+.tile-J {
+    background-color: rgb(118, 43, 204);
+    border: var(--border) solid rgb(62, 16, 116);
+    width: calc(1 * var(--unit));
+    height: calc(3 * var(--unit));
+    transform: translateX(var(--unit));
+}
+
+.tile-J::after {
+    border-right: none;
+    border-top: inherit;
+    border-bottom: inherit;
+    border-left: inherit;
+    height: calc(1 * var(--unit));
+    width: calc(1 * var(--unit) + var(--border));
+    left: calc(-1 * var(--unit) - 1 * var(--border));
+    top: calc(2 * var(--unit) - var(--border));
+}
+
+/* tile Z */
+
+.tile-Z {
+    background-color: rgb(255, 166, 0);
+    border: var(--border) solid rgb(202, 133, 4);
+    width: calc(2 * var(--unit));
+    height: calc(1 * var(--unit));
+}
+
+.tile-Z::before {
+    border: inherit;
+    width: calc(2 * var(--unit));
+    height: calc(1 * var(--unit));
+    top: calc(var(--unit) - 1 * var(--border));
+    left: calc(var(--unit) - 1 * var(--border));
+}
+
+.tile-Z::after {
+    border: none;
+    width: calc(1 * var(--unit) - 2 * var(--border));
+    height: calc(2 * var(--unit) - 2 * var(--border));
+    left: calc(var(--unit));
+}
+
+/* tile S */
+
+.tile-S {
+    background-color: rgb(255, 217, 0);
+    border: var(--border) solid rgb(195, 167, 5);
+    width: calc(2 * var(--unit));
+    height: calc(1 * var(--unit));
+    transform: translateX(var(--unit));
+}
+
+.tile-S::before {
+    border: inherit;
+    width: calc(2 * var(--unit));
+    height: calc(1 * var(--unit));
+    top: calc(var(--unit) - 1 * var(--border));
+    left: calc(-1 * var(--unit) - 1 * var(--border));
+}
+
+.tile-S::after {
+    border: none;
+    width: calc(1 * var(--unit) - 2 * var(--border));
+    height: calc(2 * var(--unit) - 2 * var(--border));
+    left: calc(- 1 * var(--unit));
+}
