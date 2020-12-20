@@ -22,7 +22,7 @@ header {
     text-align: center;
 }
 
-main {
+#game {
     width: calc(var(--unit) * var(--width));
     margin: 0 auto;
 }

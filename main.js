@@ -7,6 +7,7 @@ const middle = Math.floor((width - 1) / 2);
 
 let currentPiece = null;
 let currentAngle = 0;
+let nextPiece = null;
 
 let canMove = true;
 const moveSpeed = 100;
@@ -14,49 +15,58 @@ const moveSpeed = 100;
 const PIECES = [
     {
         name: "piece-O",
-        coordinates: [],
+        coordinates: [], // todo
     },
     {
         name: "piece-I",
-        coordinates: [],
+        coordinates: [], // todo
     },
     {
         name: "piece-L",
-        coordinates: [],
+        coordinates: [], // todo
     },
     {
         name: "piece-J",
-        coordinates: [],
+        coordinates: [], // todo
     },
     {
         name: "piece-Z",
-        coordinates: [],
+        coordinates: [], // todo
     },
     {
         name: "piece-S",
-        coordinates: [],
+        coordinates: [], // todo
     },
 ];
 
 const PIECE_NAMES = PIECES.map((piece) => piece.name);
 
 $(() => {
-    addRandompiece();
+    addNextPiece();
     addControls();
 });
 
-function addRandompiece() {
+function calculateNextPiece() {
     const pieceName = randEl(PIECE_NAMES);
-    currentAngle = 0;
-    currentPiece = $("<div></div>")
+    nextPiece = $("<div></div>")
         .addClass("piece")
         .addClass("currentPiece")
         .addClass(pieceName)
         .css({
-            left: middle * unit + "px",
+            left: (width + 2) * unit + "px",
             top: "0px",
         })
         .appendTo("#game");
+}
+
+function addNextPiece() {
+    if (!nextPiece) calculateNextPiece();
+    currentAngle = 0;
+    currentPiece = nextPiece.css({
+        left: middle * unit + "px",
+        top: "0px",
+    });
+    calculateNextPiece();
 }
 
 function movecurrentPiece(key) {
@@ -77,7 +87,7 @@ function movecurrentPiece(key) {
         // todo
         currentPiece.animate({ top: height * unit }, 2 * moveSpeed, () => {
             enableMove();
-            addRandompiece();
+            addNextPiece();
         });
     } else if (key === " ") {
         disableMove();
@@ -106,6 +116,6 @@ $("#infoButton").click(() => {
     $("#keyInfos").toggle();
     const text = $("#infoButton").text();
     $("#infoButton").text(text == "Show Keys" ? "Hide Keys" : "Show Keys");
-    let opacity = parseInt($("main").css("opacity"));
-    $("main").css("opacity", 1.2 - opacity);
+    let opacity = parseInt($("#game").css("opacity"));
+    $("#game").css("opacity", 1.2 - opacity);
 });
