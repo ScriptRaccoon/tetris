@@ -7,12 +7,34 @@ const middle = Math.floor((width - 1) / 2);
 
 let currentTile = null;
 
-function moveTileDown() {
-    const currentTop = parseInt($(this).css("top"));
-    $(this).animate({ top: currentTop + unit }, 100);
-}
+const TILES = [
+    {
+        name: "tile-O",
+        coordinates: [],
+    },
+    {
+        name: "tile-I",
+        coordinates: [],
+    },
+    {
+        name: "tile-L",
+        coordinates: [],
+    },
+    {
+        name: "tile-J",
+        coordinates: [],
+    },
+    {
+        name: "tile-Z",
+        coordinates: [],
+    },
+    {
+        name: "tile-S",
+        coordinates: [],
+    },
+];
 
-const TILE_NAMES = ["tile-I", "tile-T", "tile-B", "tile-L", "tile-J", "tile-Z", "tile-S"];
+const TILE_NAMES = TILES.map((tile) => tile.name);
 
 $(() => {
     addRandomTile();
@@ -27,37 +49,43 @@ function addRandomTile() {
         .addClass(tileName)
         .css({
             left: middle * unit + "px",
+            top: "0px",
         })
         .appendTo("#game");
 }
 
-function moveCurrentTile(direction) {
+let canMove = true;
+const moveSpeed = 100;
+
+function moveCurrentTile(key) {
+    if (!canMove) return;
+    disableMove();
     const currentLeft = parseInt(currentTile.css("left"));
     const currentTop = parseInt(currentTile.css("top"));
-    if (direction === "left") {
-        currentTile.css({ left: currentLeft - unit });
-    } else if (direction === "right") {
-        currentTile.css({ left: currentLeft + unit });
-    } else if (direction === "down") {
-        currentTile.css({ top: currentTop + unit });
-    } else if (direction === "bottom") {
+    console.log(currentTile.css("top"));
+    if (key === "ArrowLeft") {
+        currentTile.animate({ left: currentLeft - unit + "px" }, moveSpeed, enableMove);
+    } else if (key === "ArrowRight") {
+        currentTile.animate({ left: currentLeft + unit + "px" }, moveSpeed, enableMove);
+    } else if (key === "ArrowDown") {
+        currentTile.animate({ top: currentTop + unit + "px" }, moveSpeed, enableMove);
+    } else if (key === "ArrowUp") {
         // todo
-        currentTile.css("opacity", 0.5);
+        currentTile.animate({ opacity: 0.5 }, moveSpeed, enableMove);
         console.log("Needs to be implemented");
         addRandomTile();
     }
+    console.log(currentTile.css("top"));
 }
 
 function addControls() {
-    $(window).on("keydown", (e) => {
-        if (e.key === "ArrowLeft") {
-            moveCurrentTile("left");
-        } else if (e.key === "ArrowRight") {
-            moveCurrentTile("right");
-        } else if (e.key === "ArrowUp") {
-            moveCurrentTile("bottom");
-        } else if (e.key === "ArrowDown") {
-            moveCurrentTile("down");
-        }
-    });
+    $(window).on("keydown", (e) => moveCurrentTile(e.key));
+}
+
+function enableMove() {
+    canMove = true;
+}
+
+function disableMove() {
+    canMove = false;
 }

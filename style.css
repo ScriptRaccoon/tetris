@@ -51,9 +51,9 @@ main {
     background-color: inherit;
 }
 
-/* tile B */
+/* tile O */
 
-.tile-B {
+.tile-O {
     background-color: skyblue;
     border: var(--border) solid rgb(54, 113, 136);
     width: calc(2 * var(--unit));
