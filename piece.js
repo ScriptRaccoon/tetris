@@ -5,49 +5,56 @@ const PIECES = [
     {
         name: "piece-O",
         coordinates: [
-            [1, 1],
+            [0, 0],
+            [1, 0],
+            [0, 1],
             [1, 1],
         ],
-        angle: 0,
     },
     {
         name: "piece-I",
-        coordinates: [[1], [1], [1], [1]],
-        angle: 0,
+        coordinates: [
+            [0, 0],
+            [0, 1],
+            [0, 2],
+            [0, 3],
+        ],
     },
     {
         name: "piece-L",
         coordinates: [
-            [1, 0],
-            [1, 0],
-            [1, 1],
+            [0, 0],
+            [0, 1],
+            [0, 2],
+            [1, 2],
         ],
-        angle: 0,
     },
     {
         name: "piece-J",
         coordinates: [
-            [0, 1],
-            [0, 1],
+            [1, 0],
             [1, 1],
+            [1, 2],
+            [0, 2],
         ],
-        angle: 0,
     },
     {
         name: "piece-Z",
         coordinates: [
-            [1, 1, 0],
-            [0, 1, 1],
+            [0, 0],
+            [1, 0],
+            [1, 1],
+            [2, 1],
         ],
-        angle: 0,
     },
     {
         name: "piece-S",
         coordinates: [
-            [0, 1, 1],
-            [1, 1, 0],
+            [1, 0],
+            [2, 0],
+            [0, 1],
+            [1, 1],
         ],
-        angle: 0,
     },
 ];
 
@@ -66,11 +73,15 @@ function calculateNextPiece() {
             top: "0px",
         })
         .appendTo("#game");
+    return PIECE.next;
 }
 
 export function addNextPiece() {
     if (!PIECE.next) calculateNextPiece();
     PIECE.current = PIECE.next;
+    PIECE.current.angle = 0;
+    PIECE.top = 0;
+    PIECE.left = middle;
     PIECE.current.drawing.css({
         left: middle * unit + "px",
         top: "0px",

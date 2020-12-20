@@ -51,4 +51,6 @@ function movecurrentPiece(key) {
         PIECE.current.drawing.css({ transform: `rotate(${PIECE.current.angle}deg)` });
         setTimeout(enableMove, moveSpeed);
     }
+
+    setTimeout(() => console.log(PIECE.current), 2 * moveSpeed);
 }
