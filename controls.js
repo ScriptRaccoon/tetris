@@ -1,5 +1,6 @@
 import { PIECE, addNextPiece } from "./piece.js";
 import { unit, height } from "./dimensions.js";
+import { initGame } from "./game.js";
 
 const moveSpeed = 100;
 const fallSpeed = 100 / 7;
@@ -19,7 +20,7 @@ function disableMove() {
 }
 
 function movecurrentPiece(key) {
-    if (!PIECE.current.canMove) return;
+    if (!PIECE.current || !PIECE.current.canMove) return;
     if (key === "ArrowLeft") {
         disableMove();
         for (let i = 0; i < 4; i++) {
@@ -45,6 +46,7 @@ function movecurrentPiece(key) {
             setTimeout(enableMove, moveSpeed);
         }
     } else if (key === "ArrowUp") {
+        // todo: fall on the next piece
         disableMove();
         let maxy = Math.max(...PIECE.current.coordinates.map((coord) => coord[1]));
         const diff = height - 1 - maxy;
@@ -60,5 +62,7 @@ function movecurrentPiece(key) {
         setTimeout(addNextPiece, diff * fallSpeed);
     } else if (key === " ") {
         // todo: rotation
+    } else if (key === "Enter") {
+        initGame();
     }
 }
