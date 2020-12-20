@@ -6,6 +6,10 @@ const height = 25;
 const middle = Math.floor((width - 1) / 2);
 
 let currentTile = null;
+let currentAngle = 0;
+
+let canMove = true;
+const moveSpeed = 100;
 
 const TILES = [
     {
@@ -43,6 +47,7 @@ $(() => {
 
 function addRandomTile() {
     const tileName = randEl(TILE_NAMES);
+    currentAngle = 0;
     currentTile = $("<div></div>")
         .addClass("tile")
         .addClass("currentTile")
@@ -54,32 +59,34 @@ function addRandomTile() {
         .appendTo("#game");
 }
 
-let canMove = true;
-const moveSpeed = 100;
-
 function moveCurrentTile(key) {
     if (!canMove) return;
     disableMove();
     const currentLeft = parseInt(currentTile.css("left"));
     const currentTop = parseInt(currentTile.css("top"));
-    console.log(currentTile.css("top"));
     if (key === "ArrowLeft") {
-        currentTile.animate({ left: currentLeft - unit + "px" }, moveSpeed, enableMove);
+        currentTile.animate({ left: currentLeft - unit }, moveSpeed, enableMove);
     } else if (key === "ArrowRight") {
-        currentTile.animate({ left: currentLeft + unit + "px" }, moveSpeed, enableMove);
+        currentTile.animate({ left: currentLeft + unit }, moveSpeed, enableMove);
     } else if (key === "ArrowDown") {
-        currentTile.animate({ top: currentTop + unit + "px" }, moveSpeed, enableMove);
+        currentTile.animate({ top: currentTop + unit }, moveSpeed, enableMove);
     } else if (key === "ArrowUp") {
         // todo
-        currentTile.animate({ opacity: 0.5 }, moveSpeed, enableMove);
-        console.log("Needs to be implemented");
-        addRandomTile();
+        currentTile.animate({ top: height * unit }, 2 * moveSpeed, () => {
+            enableMove();
+            addRandomTile();
+        });
+    } else if (key === " ") {
+        currentAngle += 90;
+        currentTile.css({ transform: `rotate(${currentAngle}deg)` });
+        setTimeout(enableMove, moveSpeed);
     }
-    console.log(currentTile.css("top"));
 }
 
 function addControls() {
-    $(window).on("keydown", (e) => moveCurrentTile(e.key));
+    $(window).on("keydown", (e) => {
+        moveCurrentTile(e.key);
+    });
 }
 
 function enableMove() {
@@ -89,3 +96,13 @@ function enableMove() {
 function disableMove() {
     canMove = false;
 }
+
+// function rotateElement(element, angle, callback) {
+//     let currentAngle = parseInt(element.css("transform"));
+//     const steps = 100;
+//     for (let )
+//     currentAngle += angle/10;
+
+//     console.log(currentAngle);
+
+// }

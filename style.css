@@ -38,6 +38,10 @@ main {
 
 /* tiles general */
 
+.tile {
+    transition: transform 100ms linear;
+}
+
 .tile,
 .tile::after,
 .tile::before {
@@ -67,6 +71,7 @@ main {
     border: var(--border) solid rgb(149, 8, 8);
     width: calc(1 * var(--unit));
     height: calc(4 * var(--unit));
+    transform-origin: var(--unit) calc(2 * var(--unit));
 }
 
 /* tile T  */
@@ -137,6 +142,7 @@ main {
     border: var(--border) solid rgb(202, 133, 4);
     width: calc(2 * var(--unit));
     height: calc(1 * var(--unit));
+    transform-origin: var(--unit) var(--unit);
 }
 
 .tile-Z::before {
@@ -161,6 +167,7 @@ main {
     border: var(--border) solid rgb(195, 167, 5);
     width: calc(2 * var(--unit));
     height: calc(1 * var(--unit));
+    transform-origin: var(--unit) var(--unit);
     transform: translateX(var(--unit));
 }
 
