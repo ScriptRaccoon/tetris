@@ -64,28 +64,39 @@ export const PIECE = {
 };
 
 function calculateNextPiece() {
+    $("#nextPiece").html("");
     PIECE.next = JSON.parse(JSON.stringify(randEl(PIECES)));
-    PIECE.next.drawing = $("<div></div>")
-        .addClass("piece")
-        .addClass(PIECE.next.name)
-        .css({
-            left: (width + 2) * unit + "px",
-            top: "0px",
-        })
-        .appendTo("#game");
+    for (const coord of PIECE.next.coordinates) {
+        const [x, y] = coord;
+        $("<div></div>")
+            .addClass("piece")
+            .addClass(PIECE.next.name)
+            .css({
+                left: unit * x,
+                top: unit * y,
+            })
+            .appendTo("#nextPiece");
+    }
     return PIECE.next;
 }
 
 export function addNextPiece() {
-    if (!PIECE.next) calculateNextPiece();
-    PIECE.current = PIECE.next;
+    PIECE.current = PIECE.next ? PIECE.next : calculateNextPiece();
     PIECE.current.angle = 0;
-    PIECE.top = 0;
-    PIECE.left = middle;
-    PIECE.current.drawing.css({
-        left: middle * unit + "px",
-        top: "0px",
-    });
     PIECE.current.canMove = true;
+    PIECE.current.squares = [];
+    for (let i = 0; i < 4; i++) {
+        const coord = PIECE.current.coordinates[i];
+        coord[0] += middle;
+        const square = $("<div></div>")
+            .addClass("piece")
+            .addClass(PIECE.current.name)
+            .css({
+                left: unit * coord[0],
+                top: unit * coord[1],
+            })
+            .appendTo("#game");
+        PIECE.current.squares.push(square);
+    }
     calculateNextPiece();
 }

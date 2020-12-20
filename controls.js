@@ -2,6 +2,7 @@ import { PIECE, addNextPiece } from "./piece.js";
 import { unit, height } from "./dimensions.js";
 
 const moveSpeed = 100;
+const fallSpeed = 100 / 7;
 
 export function addControls() {
     $(window).on("keydown", (e) => {
@@ -19,38 +20,45 @@ function disableMove() {
 
 function movecurrentPiece(key) {
     if (!PIECE.current.canMove) return;
-    // will later get this from the coordinates
-    const currentLeft = parseInt(PIECE.current.drawing.css("left"));
-    const currentTop = parseInt(PIECE.current.drawing.css("top"));
     if (key === "ArrowLeft") {
         disableMove();
-        PIECE.current.drawing.animate(
-            { left: currentLeft - unit },
-            moveSpeed,
-            enableMove
-        );
+        for (let i = 0; i < 4; i++) {
+            PIECE.current.coordinates[i][0]--;
+            const left = parseInt(PIECE.current.squares[i].css("left"));
+            PIECE.current.squares[i].animate({ left: left - unit }, moveSpeed);
+            setTimeout(enableMove, moveSpeed);
+        }
     } else if (key === "ArrowRight") {
         disableMove();
-        PIECE.current.drawing.animate(
-            { left: currentLeft + unit },
-            moveSpeed,
-            enableMove
-        );
+        for (let i = 0; i < 4; i++) {
+            PIECE.current.coordinates[i][0]++;
+            const left = parseInt(PIECE.current.squares[i].css("left"));
+            PIECE.current.squares[i].animate({ left: left + unit }, moveSpeed);
+            setTimeout(enableMove, moveSpeed);
+        }
     } else if (key === "ArrowDown") {
         disableMove();
-        PIECE.current.drawing.animate({ top: currentTop + unit }, moveSpeed, enableMove);
+        for (let i = 0; i < 4; i++) {
+            PIECE.current.coordinates[i][1]++;
+            const top = parseInt(PIECE.current.squares[i].css("top"));
+            PIECE.current.squares[i].animate({ top: top + unit }, moveSpeed);
+            setTimeout(enableMove, moveSpeed);
+        }
     } else if (key === "ArrowUp") {
         disableMove();
-        PIECE.current.drawing.animate({ top: height * unit }, 2 * moveSpeed, () => {
-            enableMove();
-            addNextPiece();
-        });
+        let maxy = Math.max(...PIECE.current.coordinates.map((coord) => coord[1]));
+        const diff = height - 1 - maxy;
+        for (let i = 0; i < 4; i++) {
+            PIECE.current.coordinates[i][1] += diff;
+            const top = parseInt(PIECE.current.squares[i].css("top"));
+            PIECE.current.squares[i].animate(
+                { top: top + diff * unit },
+                diff * fallSpeed,
+                "linear"
+            );
+        }
+        setTimeout(addNextPiece, diff * fallSpeed);
     } else if (key === " ") {
-        disableMove();
-        PIECE.current.angle += 90;
-        PIECE.current.drawing.css({ transform: `rotate(${PIECE.current.angle}deg)` });
-        setTimeout(enableMove, moveSpeed);
+        // todo: rotation
     }
-
-    setTimeout(() => console.log(PIECE.current), 2 * moveSpeed);
 }
