@@ -1,5 +1,5 @@
 import { PIECE, addNextPiece } from "./piece.js";
-import { unit, height } from "./dimensions.js";
+import { unit } from "./dimensions.js";
 import { initGame, GAME } from "./game.js";
 import { appears, remove } from "./utils.js";
 
@@ -48,18 +48,24 @@ function movecurrentPiece(key) {
             PIECE.current.squares[i].animate({ left: x * unit }, moveSpeed);
             setTimeout(enableMove, moveSpeed);
         }
-    } else if (
-        key === "ArrowDown" &&
-        PIECE.current.coordinates.every(([x, y]) =>
-            appears([x, y + 1], GAME.allowedCoordinates)
-        )
-    ) {
-        disableMove();
-        for (let i = 0; i < 4; i++) {
-            PIECE.current.coordinates[i][1]++;
-            const y = PIECE.current.coordinates[i][1];
-            PIECE.current.squares[i].animate({ top: y * unit }, moveSpeed);
-            setTimeout(enableMove, moveSpeed);
+    } else if (key === "ArrowDown") {
+        if (
+            PIECE.current.coordinates.every(([x, y]) =>
+                appears([x, y + 1], GAME.allowedCoordinates)
+            )
+        ) {
+            disableMove();
+            for (let i = 0; i < 4; i++) {
+                PIECE.current.coordinates[i][1]++;
+                const y = PIECE.current.coordinates[i][1];
+                PIECE.current.squares[i].animate({ top: y * unit }, moveSpeed);
+                setTimeout(enableMove, moveSpeed);
+            }
+        } else {
+            for (const coord of PIECE.current.coordinates) {
+                remove(coord, GAME.allowedCoordinates);
+            }
+            addNextPiece();
         }
     } else if (key === "ArrowUp") {
         disableMove();

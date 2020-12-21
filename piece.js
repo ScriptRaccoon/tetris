@@ -1,5 +1,5 @@
 import { randEl } from "./utils.js";
-import { width, middle, unit } from "./dimensions.js";
+import { middle, unit } from "./dimensions.js";
 
 const PIECES = [
     {
