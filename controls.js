@@ -1,6 +1,7 @@
 import { PIECE, addNextPiece } from "./piece.js";
 import { unit, height } from "./dimensions.js";
-import { initGame } from "./game.js";
+import { initGame, GAME } from "./game.js";
+import { appears, remove } from "./utils.js";
 
 const moveSpeed = 100;
 const fallSpeed = 100 / 7;
@@ -21,45 +22,66 @@ function disableMove() {
 
 function movecurrentPiece(key) {
     if (!PIECE.current || !PIECE.current.canMove) return;
-    if (key === "ArrowLeft") {
+    if (
+        key === "ArrowLeft" &&
+        PIECE.current.coordinates.every(([x, y]) =>
+            appears([x - 1, y], GAME.allowedCoordinates)
+        )
+    ) {
         disableMove();
         for (let i = 0; i < 4; i++) {
             PIECE.current.coordinates[i][0]--;
-            const left = parseInt(PIECE.current.squares[i].css("left"));
-            PIECE.current.squares[i].animate({ left: left - unit }, moveSpeed);
+            const x = PIECE.current.coordinates[i][0];
+            PIECE.current.squares[i].animate({ left: x * unit }, moveSpeed);
             setTimeout(enableMove, moveSpeed);
         }
-    } else if (key === "ArrowRight") {
+    } else if (
+        key === "ArrowRight" &&
+        PIECE.current.coordinates.every(([x, y]) =>
+            appears([x + 1, y], GAME.allowedCoordinates)
+        )
+    ) {
         disableMove();
         for (let i = 0; i < 4; i++) {
             PIECE.current.coordinates[i][0]++;
-            const left = parseInt(PIECE.current.squares[i].css("left"));
-            PIECE.current.squares[i].animate({ left: left + unit }, moveSpeed);
+            const x = PIECE.current.coordinates[i][0];
+            PIECE.current.squares[i].animate({ left: x * unit }, moveSpeed);
             setTimeout(enableMove, moveSpeed);
         }
-    } else if (key === "ArrowDown") {
+    } else if (
+        key === "ArrowDown" &&
+        PIECE.current.coordinates.every(([x, y]) =>
+            appears([x, y + 1], GAME.allowedCoordinates)
+        )
+    ) {
         disableMove();
         for (let i = 0; i < 4; i++) {
             PIECE.current.coordinates[i][1]++;
-            const top = parseInt(PIECE.current.squares[i].css("top"));
-            PIECE.current.squares[i].animate({ top: top + unit }, moveSpeed);
+            const y = PIECE.current.coordinates[i][1];
+            PIECE.current.squares[i].animate({ top: y * unit }, moveSpeed);
             setTimeout(enableMove, moveSpeed);
         }
     } else if (key === "ArrowUp") {
-        // todo: fall on the next piece
         disableMove();
-        let maxy = Math.max(...PIECE.current.coordinates.map((coord) => coord[1]));
-        const diff = height - 1 - maxy;
-        for (let i = 0; i < 4; i++) {
-            PIECE.current.coordinates[i][1] += diff;
-            const top = parseInt(PIECE.current.squares[i].css("top"));
-            PIECE.current.squares[i].animate(
-                { top: top + diff * unit },
-                diff * fallSpeed,
-                "linear"
-            );
+        let fallHeight = 0;
+        while (
+            PIECE.current.coordinates.every(([x, y]) =>
+                appears([x, y + 1], GAME.allowedCoordinates)
+            )
+        ) {
+            fallHeight++;
+            for (let i = 0; i < 4; i++) {
+                PIECE.current.coordinates[i][1]++;
+                const y = PIECE.current.coordinates[i][1];
+                PIECE.current.squares[i].animate({ top: y * unit }, fallSpeed, "linear");
+            }
         }
-        setTimeout(addNextPiece, diff * fallSpeed);
+        for (const coord of PIECE.current.coordinates) {
+            remove(coord, GAME.allowedCoordinates);
+        }
+        setTimeout(() => {
+            addNextPiece();
+        }, fallHeight * fallSpeed);
     } else if (key === " ") {
         // todo: rotation
     } else if (key === "Enter") {

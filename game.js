@@ -1,7 +1,7 @@
 import { width, height } from "./dimensions.js";
 import { addNextPiece, PIECE } from "./piece.js";
 
-const GAME = {
+export const GAME = {
     allowedCoordinates: [],
 };
 
