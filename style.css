@@ -21,6 +21,11 @@ header {
     text-align: center;
 }
 
+main {
+    display: flex;
+    justify-content: center;
+}
+
 /* info */
 
 #info {
@@ -67,8 +72,8 @@ header {
 /* game */
 
 #game {
+    transform: translateX(calc(2 * var(--unit)));
     width: calc(var(--unit) * var(--width));
-    margin: 0 auto;
     overflow: hidden;
     width: calc(var(--unit) * var(--width));
     height: calc(var(--unit) * var(--height));
@@ -136,12 +141,9 @@ header {
 
 /* next piece section */
 
-#nextPieceContainer {
-    position: absolute;
-    top: calc(1 * var(--unit));
-    left: calc((var(--width) + 2) * var(--unit));
-}
-
 #nextPiece {
+    transform: translateX(calc(2 * var(--unit)));
+    margin-left: var(--unit);
+    width: calc(3 * var(--unit));
     position: relative;
 }

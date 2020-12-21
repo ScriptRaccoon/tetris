@@ -62,6 +62,16 @@ const PIECES = [
         ],
         rotationCenter: [1, 1],
     },
+    {
+        name: "piece-T",
+        coordinates: [
+            [0, 0],
+            [1, 0],
+            [2, 0],
+            [1, 1],
+        ],
+        rotationCenter: [1, 1],
+    },
 ];
 
 export const PIECE = {
@@ -83,11 +93,11 @@ function calculateNextPiece() {
             })
             .appendTo("#nextPiece");
     }
-    return PIECE.next;
 }
 
 export function addNextPiece() {
-    PIECE.current = PIECE.next ? PIECE.next : calculateNextPiece();
+    if (!PIECE.next) calculateNextPiece();
+    PIECE.current = PIECE.next;
     PIECE.current.canMove = true;
     PIECE.current.squares = [];
     PIECE.current.rotationCenter[0] += middle;
