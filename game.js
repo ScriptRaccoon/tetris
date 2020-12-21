@@ -1,6 +1,7 @@
 import { width, height } from "./dimensions.js";
 import { addNextPiece, PIECE } from "./piece.js";
 import { movecurrentPiece } from "./controls.js";
+import { removeAll } from "./utils.js";
 
 const gameSpeed = 300;
 
@@ -17,7 +18,7 @@ export function initGame() {
     }
     GAME.allowedCoordinates = [];
     for (let x = 0; x < width; x++) {
-        for (let y = 0; y < height; y++) {
+        for (let y = -3; y < height; y++) {
             GAME.allowedCoordinates.push([x, y]);
         }
     }
@@ -27,4 +28,8 @@ export function initGame() {
     // gameInterval = setInterval(() => {
     //     movecurrentPiece("ArrowDown");
     // }, gameSpeed);
+}
+
+export function freezePiece() {
+    removeAll(PIECE.current.coordinates, GAME.allowedCoordinates);
 }

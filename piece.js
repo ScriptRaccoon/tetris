@@ -20,7 +20,7 @@ const PIECES = [
             [0, 2],
             [0, 3],
         ],
-        rotationCenter: [0, 1],
+        rotationCenter: [0, 2],
     },
     {
         name: "piece-L",
@@ -105,4 +105,11 @@ export function addNextPiece() {
         PIECE.current.squares.push(square);
     }
     calculateNextPiece();
+}
+
+export function drawPiece(time) {
+    for (let i = 0; i < 4; i++) {
+        const [x, y] = PIECE.current.coordinates[i];
+        PIECE.current.squares[i].animate({ left: x * unit, top: y * unit }, time);
+    }
 }
