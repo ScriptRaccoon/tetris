@@ -123,3 +123,13 @@ export function drawPiece(time) {
         PIECE.current.squares[i].animate({ left: x * unit, top: y * unit }, time);
     }
 }
+
+export function getPieceAt(x, y) {
+    const piece = $(".piece").filter(function () {
+        return (
+            parseInt($(this).css("left")) === x * unit &&
+            parseInt($(this).css("top")) === y * unit
+        );
+    });
+    return piece;
+}

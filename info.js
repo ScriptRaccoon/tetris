@@ -4,7 +4,7 @@ export function addInfo() {
         $("#keyInfos").toggle();
         const text = $("#infoButton").text();
         $("#infoButton").text(text == "Show Keys" ? "Hide Keys" : "Show Keys");
-        let opacity = parseInt($("#game").css("opacity"));
-        $("#game").css("opacity", 1.2 - opacity);
+        let opacity = parseInt($("main").css("opacity"));
+        $("main").css("opacity", 1.2 - opacity);
     });
 }

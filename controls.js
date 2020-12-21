@@ -1,5 +1,5 @@
 import { PIECE, addNextPiece, drawPiece } from "./piece.js";
-import { initGame, GAME, freezePiece } from "./game.js";
+import { initGame, GAME, freezePiece, checkTetris } from "./game.js";
 import { isSubset, rotate } from "./utils.js";
 
 const moveSpeed = 100;
@@ -39,6 +39,7 @@ export function movecurrentPiece(key) {
             setTimeout(enableMove, moveSpeed);
         } else if (key === "ArrowDown") {
             freezePiece();
+            checkTetris();
             addNextPiece();
         }
     } else if (key === " ") {
@@ -55,8 +56,9 @@ export function movecurrentPiece(key) {
         drawPiece(fallHeight * fallSpeed);
         setTimeout(() => {
             freezePiece();
+            checkTetris();
             addNextPiece();
-        }, fallHeight * fallSpeed);
+        }, (fallHeight + 1) * fallSpeed);
     } else if (key === "Enter") {
         initGame();
     }

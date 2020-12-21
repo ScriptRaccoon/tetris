@@ -29,3 +29,13 @@ export function rotate(coord, origin) {
     const [u, v] = origin;
     return [y - v + u, u - x + v];
 }
+
+export function interval(a, b) {
+    const list = [];
+    let x = a;
+    while (x < b) {
+        list.push(x);
+        x++;
+    }
+    return list;
+}
