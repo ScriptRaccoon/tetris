@@ -20,7 +20,7 @@ function disableMove() {
     PIECE.current.canMove = false;
 }
 
-function movecurrentPiece(key) {
+export function movecurrentPiece(key) {
     if (!PIECE.current || !PIECE.current.canMove) return;
     if (
         key === "ArrowLeft" &&
@@ -105,7 +105,6 @@ function movecurrentPiece(key) {
                 top: y * unit,
             });
         }
-        console.log(origin);
     } else if (key === "Enter") {
         initGame();
     }
