@@ -69,8 +69,7 @@ header {
 #game {
     width: calc(var(--unit) * var(--width));
     margin: 0 auto;
-    /* to be added in the end: */
-    /* overflow: hidden; */
+    overflow: hidden;
     width: calc(var(--unit) * var(--width));
     height: calc(var(--unit) * var(--height));
     border: 1px solid var(--gray);
@@ -82,7 +81,6 @@ header {
 .piece {
     position: absolute;
     box-sizing: border-box;
-    transition: transform 100ms linear;
     width: var(--unit);
     height: var(--unit);
 }

@@ -50,7 +50,7 @@ const PIECES = [
             [1, 1],
             [2, 1],
         ],
-        rotationCenter: [2, 1],
+        rotationCenter: [1, 1],
     },
     {
         name: "piece-S",
@@ -88,7 +88,6 @@ function calculateNextPiece() {
 
 export function addNextPiece() {
     PIECE.current = PIECE.next ? PIECE.next : calculateNextPiece();
-    PIECE.current.angle = 0;
     PIECE.current.canMove = true;
     PIECE.current.squares = [];
     PIECE.current.rotationCenter[0] += middle;

@@ -24,7 +24,7 @@ export function initGame() {
     PIECE.current = null;
     PIECE.next = null;
     addNextPiece();
-    gameInterval = setInterval(() => {
-        movecurrentPiece("ArrowDown");
-    }, gameSpeed);
+    // gameInterval = setInterval(() => {
+    //     movecurrentPiece("ArrowDown");
+    // }, gameSpeed);
 }

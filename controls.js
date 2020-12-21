@@ -34,8 +34,8 @@ export function movecurrentPiece(key) {
             PIECE.current.coordinates[i][0]--;
             const x = PIECE.current.coordinates[i][0];
             PIECE.current.squares[i].animate({ left: x * unit }, moveSpeed);
-            setTimeout(enableMove, moveSpeed);
         }
+        setTimeout(enableMove, moveSpeed);
     } else if (
         key === "ArrowRight" &&
         PIECE.current.coordinates.every(([x, y]) =>
@@ -48,8 +48,8 @@ export function movecurrentPiece(key) {
             PIECE.current.coordinates[i][0]++;
             const x = PIECE.current.coordinates[i][0];
             PIECE.current.squares[i].animate({ left: x * unit }, moveSpeed);
-            setTimeout(enableMove, moveSpeed);
         }
+        setTimeout(enableMove, moveSpeed);
     } else if (key === "ArrowDown") {
         if (
             PIECE.current.coordinates.every(([x, y]) =>
@@ -62,8 +62,8 @@ export function movecurrentPiece(key) {
                 PIECE.current.coordinates[i][1]++;
                 const y = PIECE.current.coordinates[i][1];
                 PIECE.current.squares[i].animate({ top: y * unit }, moveSpeed);
-                setTimeout(enableMove, moveSpeed);
             }
+            setTimeout(enableMove, moveSpeed);
         } else {
             for (const coord of PIECE.current.coordinates) {
                 remove(coord, GAME.allowedCoordinates);
@@ -83,7 +83,7 @@ export function movecurrentPiece(key) {
             for (let i = 0; i < 4; i++) {
                 PIECE.current.coordinates[i][1]++;
                 const y = PIECE.current.coordinates[i][1];
-                PIECE.current.squares[i].animate({ top: y * unit }, fallSpeed, "linear");
+                PIECE.current.squares[i].animate({ top: y * unit }, fallSpeed);
             }
         }
         for (const coord of PIECE.current.coordinates) {
@@ -95,15 +95,21 @@ export function movecurrentPiece(key) {
     } else if (key === "ArrowUp") {
         // rotation
         // todo: check collision *before* rotating
-        // todo: animation
-        const origin = PIECE.current.rotationCenter;
+        disableMove();
         for (let i = 0; i < 4; i++) {
-            const [x, y] = rotateBy90Degrees(PIECE.current.coordinates[i], origin);
+            const [x, y] = rotateBy90Degrees(
+                PIECE.current.coordinates[i],
+                PIECE.current.rotationCenter
+            );
             PIECE.current.coordinates[i] = [x, y];
-            PIECE.current.squares[i].css({
-                left: x * unit,
-                top: y * unit,
-            });
+            PIECE.current.squares[i].animate(
+                {
+                    left: x * unit,
+                    top: y * unit,
+                },
+                moveSpeed,
+                enableMove
+            );
         }
     } else if (key === "Enter") {
         initGame();
