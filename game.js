@@ -16,5 +16,4 @@ export function initGame() {
     PIECE.current = null;
     PIECE.next = null;
     addNextPiece();
-    console.log(GAME.allowedCoordinates);
 }

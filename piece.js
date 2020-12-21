@@ -10,6 +10,7 @@ const PIECES = [
             [0, 1],
             [1, 1],
         ],
+        rotationCenter: [0.5, 0.5],
     },
     {
         name: "piece-I",
@@ -19,6 +20,7 @@ const PIECES = [
             [0, 2],
             [0, 3],
         ],
+        rotationCenter: [0, 1],
     },
     {
         name: "piece-L",
@@ -28,6 +30,7 @@ const PIECES = [
             [0, 2],
             [1, 2],
         ],
+        rotationCenter: [0, 2],
     },
     {
         name: "piece-J",
@@ -37,6 +40,7 @@ const PIECES = [
             [1, 2],
             [0, 2],
         ],
+        rotationCenter: [1, 2],
     },
     {
         name: "piece-Z",
@@ -46,6 +50,7 @@ const PIECES = [
             [1, 1],
             [2, 1],
         ],
+        rotationCenter: [2, 1],
     },
     {
         name: "piece-S",
@@ -55,6 +60,7 @@ const PIECES = [
             [0, 1],
             [1, 1],
         ],
+        rotationCenter: [1, 1],
     },
 ];
 
@@ -85,6 +91,7 @@ export function addNextPiece() {
     PIECE.current.angle = 0;
     PIECE.current.canMove = true;
     PIECE.current.squares = [];
+    PIECE.current.rotationCenter[0] += middle;
     for (let i = 0; i < 4; i++) {
         const coord = PIECE.current.coordinates[i];
         coord[0] += middle;
