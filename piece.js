@@ -1,135 +1,82 @@
-import { randEl } from "./utils.js";
-import { middle, unit } from "./dimensions.js";
+import { randEl, rotate } from "./utils.js";
+import { unit } from "./dimensions.js";
+import { PIECES } from "./pieceTypes.js";
 
-const PIECES = [
-    {
-        name: "piece-O",
-        coordinates: [
-            [0, 0],
-            [1, 0],
-            [0, 1],
-            [1, 1],
-        ],
-        rotationCenter: [0.5, 0.5],
-    },
-    {
-        name: "piece-I",
-        coordinates: [
-            [0, 0],
-            [0, 1],
-            [0, 2],
-            [0, 3],
-        ],
-        rotationCenter: [0, 2],
-    },
-    {
-        name: "piece-L",
-        coordinates: [
-            [0, 0],
-            [0, 1],
-            [0, 2],
-            [1, 2],
-        ],
-        rotationCenter: [0, 2],
-    },
-    {
-        name: "piece-J",
-        coordinates: [
-            [1, 0],
-            [1, 1],
-            [1, 2],
-            [0, 2],
-        ],
-        rotationCenter: [1, 2],
-    },
-    {
-        name: "piece-Z",
-        coordinates: [
-            [0, 0],
-            [1, 0],
-            [1, 1],
-            [2, 1],
-        ],
-        rotationCenter: [1, 1],
-    },
-    {
-        name: "piece-S",
-        coordinates: [
-            [1, 0],
-            [2, 0],
-            [0, 1],
-            [1, 1],
-        ],
-        rotationCenter: [1, 1],
-    },
-    {
-        name: "piece-T",
-        coordinates: [
-            [0, 0],
-            [1, 0],
-            [2, 0],
-            [1, 1],
-        ],
-        rotationCenter: [1, 1],
-    },
-];
-
-export const PIECE = {
-    next: null,
-    current: null,
-};
-
-function calculateNextPiece() {
-    $("#nextPiece").html("");
-    PIECE.next = JSON.parse(JSON.stringify(randEl(PIECES)));
-    for (const coord of PIECE.next.coordinates) {
-        const [x, y] = coord;
-        $("<div></div>")
-            .addClass("piece")
-            .addClass(PIECE.next.name)
-            .css({
-                left: unit * x,
-                top: unit * y,
-            })
-            .appendTo("#nextPiece");
+export class Piece {
+    constructor() {
+        const p = JSON.parse(JSON.stringify(randEl(PIECES)));
+        this.name = p.name;
+        this.coordinates = p.coordinates;
+        this.rotationCenter = p.rotationCenter;
+        this.squares = [];
+        this.length = this.coordinates.length;
+        this.canMove = true;
+        this.moveSpeed = 100;
+        this.fallSpeed = 100 / 7;
     }
-}
 
-export function addNextPiece() {
-    if (!PIECE.next) calculateNextPiece();
-    PIECE.current = PIECE.next;
-    PIECE.current.canMove = true;
-    PIECE.current.squares = [];
-    PIECE.current.rotationCenter[0] += middle;
-    for (let i = 0; i < 4; i++) {
-        const coord = PIECE.current.coordinates[i];
-        coord[0] += middle;
-        const square = $("<div></div>")
-            .addClass("piece")
-            .addClass(PIECE.current.name)
-            .css({
-                left: unit * coord[0],
-                top: unit * coord[1],
-            })
-            .appendTo("#game");
-        PIECE.current.squares.push(square);
+    get moveMap() {
+        return {
+            ArrowLeft: ([x, y]) => [x - 1, y],
+            ArrowRight: ([x, y]) => [x + 1, y],
+            ArrowDown: ([x, y]) => [x, y + 1],
+            ArrowUp: (coord) => rotate(coord, this.rotationCenter),
+        };
     }
-    calculateNextPiece();
-}
 
-export function drawPiece(time) {
-    for (let i = 0; i < 4; i++) {
-        const [x, y] = PIECE.current.coordinates[i];
-        PIECE.current.squares[i].animate({ left: x * unit, top: y * unit }, time);
+    draw(options) {
+        for (const coord of this.coordinates) {
+            const square = $("<div></div>")
+                .addClass("piece")
+                .addClass(this.name)
+                .css({
+                    left: unit * coord[0],
+                    top: unit * coord[1],
+                })
+                .appendTo("#game");
+
+            if (options && options.firstTime) {
+                this.squares.push(square);
+            }
+        }
     }
-}
 
-export function getPieceAt(x, y) {
-    const piece = $(".piece").filter(function () {
-        return (
-            parseInt($(this).css("left")) === x * unit &&
-            parseInt($(this).css("top")) === y * unit
-        );
-    });
-    return piece;
+    drawMove(options) {
+        const time = options ? options.time : this.moveSpeed;
+        for (let i = 0; i < this.length; i++) {
+            const [x, y] = this.coordinates[i];
+            this.squares[i].animate({ left: x * unit, top: y * unit }, time);
+        }
+    }
+
+    drawAsNext() {
+        $("#nextPiece").html("");
+        for (const [x, y] of this.coordinates) {
+            $("<div></div>")
+                .addClass("piece")
+                .addClass(this.name)
+                .css({
+                    left: unit * x,
+                    top: unit * y,
+                })
+                .appendTo("#nextPiece");
+        }
+    }
+
+    translateX(offset) {
+        this.rotationCenter[0] += offset;
+        for (let i = 0; i < this.length; i++) {
+            this.coordinates[i][0] += offset;
+        }
+    }
+
+    static getSquareAt(x, y) {
+        const piece = $(".piece").filter(function () {
+            return (
+                parseInt($(this).css("left")) === x * unit &&
+                parseInt($(this).css("top")) === y * unit
+            );
+        });
+        return piece;
+    }
 }

@@ -1,65 +1,36 @@
-import { PIECE, addNextPiece, drawPiece } from "./piece.js";
-import { initGame, GAME, freezePiece, checkTetris } from "./game.js";
-import { isSubset, rotate } from "./utils.js";
-
-const moveSpeed = 100;
-const fallSpeed = moveSpeed / 7;
-
-export function addControls() {
-    $(window).on("keydown", (e) => {
-        movecurrentPiece(e.key);
-    });
-}
-
-function enableMove() {
-    PIECE.current.canMove = true;
-}
-
-function disableMove() {
-    PIECE.current.canMove = false;
-}
-
-const MOVE_MAP = {
-    ArrowLeft: ([x, y]) => [x - 1, y],
-    ArrowRight: ([x, y]) => [x + 1, y],
-    ArrowDown: ([x, y]) => [x, y + 1],
-    ArrowUp: (coord) => rotate(coord, PIECE.current.rotationCenter),
-};
-
-export function movecurrentPiece(key) {
-    if (!PIECE.current || !PIECE.current.canMove) return;
-    if (Object.keys(MOVE_MAP).includes(key)) {
-        const currentMap = MOVE_MAP[key];
-        const movedCoordinates = PIECE.current.coordinates.map(currentMap);
-        if (isSubset(movedCoordinates, GAME.allowedCoordinates)) {
-            disableMove();
-            PIECE.current.coordinates = movedCoordinates;
-            PIECE.current.rotationCenter = currentMap(PIECE.current.rotationCenter);
-            drawPiece(moveSpeed);
-            setTimeout(enableMove, moveSpeed);
+export function movePiece(key, game) {
+    const piece = game.piece;
+    if (!piece || !piece.canMove) return;
+    if (Object.keys(piece.moveMap).includes(key)) {
+        const myMap = piece.moveMap[key];
+        const movedCoordinates = piece.coordinates.map(myMap);
+        if (movedCoordinates.every((coord) => game.hasFree(coord))) {
+            piece.canMove = false;
+            piece.coordinates = movedCoordinates;
+            piece.rotationCenter = myMap(piece.rotationCenter);
+            piece.drawMove();
+            setTimeout(() => {
+                piece.canMove = true;
+            }, piece.moveSpeed);
         } else if (key === "ArrowDown") {
-            freezePiece();
-            checkTetris();
-            addNextPiece();
+            game.finalizeMove();
         }
     } else if (key === " ") {
-        const currentMap = MOVE_MAP["ArrowDown"];
-        disableMove();
+        piece.canMove = false;
+        const myMap = piece.moveMap["ArrowDown"];
+        let movedCoordinates = piece.coordinates.map(myMap);
         let fallHeight = 0;
-        let movedCoordinates = PIECE.current.coordinates.map(currentMap);
-        while (isSubset(movedCoordinates, GAME.allowedCoordinates)) {
+        while (movedCoordinates.every((coord) => game.hasFree(coord))) {
             fallHeight++;
-            PIECE.current.coordinates = movedCoordinates;
-            PIECE.current.rotationCenter = currentMap(PIECE.current.rotationCenter);
-            movedCoordinates = PIECE.current.coordinates.map(currentMap);
+            piece.coordinates = movedCoordinates;
+            piece.rotationCenter = myMap(piece.rotationCenter);
+            movedCoordinates = piece.coordinates.map(myMap);
         }
-        drawPiece(fallHeight * fallSpeed);
+        piece.drawMove({ time: fallHeight * piece.fallSpeed });
         setTimeout(() => {
-            freezePiece();
-            checkTetris();
-            addNextPiece();
-        }, (fallHeight + 1) * fallSpeed);
+            game.finalizeMove();
+        }, fallHeight * piece.fallSpeed);
     } else if (key === "Enter") {
-        initGame();
+        game.init();
     }
 }

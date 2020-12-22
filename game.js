@@ -1,54 +1,95 @@
-import { width, height } from "./dimensions.js";
-import { addNextPiece, PIECE, getPieceAt } from "./piece.js";
-import { movecurrentPiece } from "./controls.js";
-import { removeAll, interval, appears } from "./utils.js";
+import { width, middle, height, unit } from "./dimensions.js";
+import { movePiece } from "./controls.js";
+import { Piece } from "./piece.js";
 
-const gameSpeed = 300;
-
-export let gameInterval = null;
-
-export const GAME = {
-    allowedCoordinates: [],
-};
-
-export function initGame() {
-    $(".piece").remove();
-    if (gameInterval) {
-        clearInterval(gameInterval);
+export class Game {
+    constructor() {
+        this.speed = 300;
+        this.interval = null;
+        this.map = [];
+        this.piece = null;
+        this.nextPiece = null;
+        this.init();
+        this.addControls();
     }
-    GAME.allowedCoordinates = [];
-    for (let x = 0; x < width; x++) {
-        for (let y = -3; y < height; y++) {
-            GAME.allowedCoordinates.push([x, y]);
+
+    hasFree(coord) {
+        const [x, y] = coord;
+        return x >= 0 && y >= 0 && x < width && y < height && this.map[y][x] === null;
+    }
+
+    init() {
+        this.stopInterval();
+        $(".piece").remove();
+        this.map = new Array(height).fill(0).map((y) => new Array(width).fill(null));
+        this.piece = null;
+        this.nextPiece = null;
+        this.blockedCoordinates = [];
+        this.addNewPiece();
+    }
+
+    addControls() {
+        $(window).on("keydown", (e) => {
+            movePiece(e.key, this);
+        });
+    }
+
+    startInterval() {
+        this.interval = setInterval(movecurrentPiece("ArrowDown"), this.speed);
+    }
+
+    stopInterval() {
+        if (this.interval) {
+            clearInterval(this.interval);
         }
     }
-    PIECE.current = null;
-    PIECE.next = null;
-    addNextPiece();
-    // gameInterval = setInterval(() => {
-    //     movecurrentPiece("ArrowDown");
-    // }, gameSpeed);
-}
 
-export function freezePiece() {
-    removeAll(PIECE.current.coordinates, GAME.allowedCoordinates);
-}
-
-export function checkTetris(yValues) {
-    const yValues = Array.from(
-        new Set(PIECE.current.coordinates.map((coord) => coord[1]))
-    ).sort((a, b) => b - a);
-    const fullyLines = yValues.filter((y) =>
-        interval(0, width).every((x) => !appears([x, y], GAME.allowedCoordinates))
-    );
-    if (fullyLines.length === 0) return;
-    // remove lines
-    for (const y of fullyLines) {
-        for (const x of interval(0, width)) {
-            GAME.allowedCoordinates.push([x, y]);
-            const piece = getPieceAt(x, y);
-            piece.remove();
+    addNewPiece() {
+        if (!this.nextPiece) {
+            this.nextPiece = new Piece();
+            this.nextPiece.drawAsNext();
         }
-        // todo: move lines above down
+        this.piece = this.nextPiece;
+        this.piece.translateX(middle);
+        this.piece.draw({ firstTime: true });
+        this.nextPiece = new Piece();
+        this.nextPiece.drawAsNext();
+    }
+
+    finalizeMove() {
+        this.freezePiece();
+        this.checkTetris();
+        this.addNewPiece();
+        console.dir(this.map);
+    }
+
+    freezePiece() {
+        for (const [x, y] of this.piece.coordinates) {
+            this.map[y][x] = Piece.getSquareAt(x, y);
+        }
+    }
+
+    checkTetris() {
+        // todo
     }
 }
+
+// export function checkTetris() {
+//     const yValues = Array.from(
+//         new Set(PIECE.current.coordinates.map((coord) => coord[1]))
+//     ).sort((a, b) => b - a);
+//     const fullyLines = yValues.filter((y) =>
+//         interval(0, width).every((x) => !appears([x, y], GAME.allowedCoordinates))
+//     );
+//     if (fullyLines.length === 0) return;
+//     // remove lines
+//     for (const y of fullyLines) {
+//         for (const x of interval(0, width)) {
+//             GAME.allowedCoordinates.push([x, y]);
+//             const piece = getPieceAt(x, y);
+//             piece.remove();
+//         }
+//         // todo: move lines above down
+//         // ----> need to refactor the whole system
+//     }
+// }
