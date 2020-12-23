@@ -12,7 +12,6 @@ export class Game {
         this.nextPiece = null;
         this.addControls();
         this.init();
-        this.startInterval();
     }
 
     hasFree(coord) {
@@ -27,6 +26,7 @@ export class Game {
         this.nextPiece = null;
         this.blockedCoordinates = [];
         this.addNewPiece();
+        this.startInterval();
     }
 
     addControls() {
@@ -43,9 +43,8 @@ export class Game {
     }
 
     stopInterval() {
-        if (this.interval) {
-            clearInterval(this.interval);
-        }
+        clearInterval(this.interval);
+        this.interval = null;
     }
 
     addNewPiece() {
@@ -58,6 +57,17 @@ export class Game {
         this.piece.draw({ firstTime: true });
         this.nextPiece = new Piece();
         this.nextPiece.drawAsNext();
+        this.checkGameOver();
+    }
+
+    checkGameOver() {
+        const isGameOver = this.piece.coordinates.some(
+            ([x, y]) => this.map[y][x] != null
+        );
+        if (isGameOver) {
+            window.alert("Game over!");
+            this.stopInterval();
+        }
     }
 
     async finalizeMove() {
@@ -98,6 +108,16 @@ export class Game {
             } else {
                 y++;
             }
+        }
+    }
+
+    togglePause() {
+        if (this.interval) {
+            this.stopInterval();
+            $("#statusMessage").text("Paused");
+        } else {
+            this.startInterval();
+            $("#statusMessage").text("Playing");
         }
     }
 }

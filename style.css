@@ -8,6 +8,7 @@
     --width: 12;
     --height: 25;
     --gray: #555;
+    --statusWidth: 150px;
 }
 
 body {
@@ -72,8 +73,8 @@ main {
 /* game */
 
 #game {
-    transform: translateX(calc(2 * var(--unit)));
     width: calc(var(--unit) * var(--width));
+    flex-shrink: 0;
     overflow: hidden;
     width: calc(var(--unit) * var(--width));
     height: calc(var(--unit) * var(--height));
@@ -142,8 +143,16 @@ main {
 /* next piece section */
 
 #nextPiece {
-    transform: translateX(calc(2 * var(--unit)));
+    width: var(--statusWidth);
     margin-left: var(--unit);
-    width: calc(3 * var(--unit));
     position: relative;
+}
+
+#status {
+    width: var(--statusWidth);
+    margin-right: var(--unit);
+}
+
+#status p {
+    margin: 0px 0px 10px 0px;
 }

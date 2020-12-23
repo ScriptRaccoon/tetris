@@ -1,4 +1,8 @@
 export async function movePiece(key, game, byPlayer) {
+    if (key === "p") {
+        game.togglePause();
+        return;
+    }
     const piece = game.piece;
     if (!piece || !piece.canMove) return;
     if (Object.keys(piece.moveMap).includes(key)) {
