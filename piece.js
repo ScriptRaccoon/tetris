@@ -42,8 +42,7 @@ export class Piece {
         }
     }
 
-    async drawMove(options) {
-        const time = options ? options.time : this.moveSpeed;
+    async drawMove(time) {
         const animations = [];
         for (let i = 0; i < this.length; i++) {
             const [x, y] = this.coordinates[i];

@@ -4,14 +4,6 @@ import { Piece } from "./piece.js";
 
 export class Game {
     constructor() {
-        this.intervalSpeed = 300;
-        this.tetrisSpeed = 100;
-        this.interval = null;
-        this.map = [];
-        this.piece = null;
-        this.nextPiece = null;
-        this.numberPieces = 0;
-        this.numberLines = 0;
         this.addControls();
         this.init();
     }
@@ -22,17 +14,21 @@ export class Game {
     }
 
     init() {
-        this.stopInterval();
+        if (this.interval) this.stopInterval();
         $(".square").remove();
         this.map = new Array(height).fill(0).map((y) => new Array(width).fill(null));
         this.piece = null;
         this.nextPiece = null;
+        this.intervalSpeed = 300;
+        this.pieceSpeed = 100;
+        this.tetrisSpeed = 100;
         this.numberPieces = 0;
-        $("#pieceCounter").text(0);
         this.numberLines = 0;
-        $("#lineCounter").text(0);
+        this.level = 1;
         this.addNewPiece();
         this.startInterval("Playing");
+        $("#pieceCounter").text(0);
+        $("#lineCounter").text(0);
         this.showLineRecord();
     }
 
@@ -54,13 +50,13 @@ export class Game {
             () => movePiece("ArrowDown", this, false),
             this.intervalSpeed
         );
-        $("#statusMessage").text(message);
+        if (message) $("#statusMessage").text(message);
     }
 
     stopInterval(message) {
         clearInterval(this.interval);
         this.interval = null;
-        $("#statusMessage").text(message);
+        if (message) $("#statusMessage").text(message);
     }
 
     addNewPiece() {
@@ -90,6 +86,7 @@ export class Game {
     finalizeMove() {
         this.freezePiece();
         this.checkTetris();
+        this.increaseLevel();
         this.addNewPiece();
         this.showLineRecord();
     }
@@ -136,6 +133,17 @@ export class Game {
             this.stopInterval("Paused");
         } else {
             this.startInterval("Playing");
+        }
+    }
+
+    increaseLevel() {
+        if (this.numberLines >= this.level * 10) {
+            this.level++;
+            this.stopInterval();
+            this.intervalSpeed = Math.max(0, this.intervalSpeed - 20);
+            this.startInterval();
+            this.pieceSpeed = Math.max(0, this.pieceSpeed - 20);
+            this.tetrisSpeed = Math.max(0, this.tetrisSpeed - 20);
         }
     }
 }

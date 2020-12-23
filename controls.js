@@ -16,7 +16,7 @@ export async function movePiece(key, game, byPlayer) {
             if (byPlayer) piece.canMove = false;
             piece.coordinates = movedCoordinates;
             piece.rotationCenter = myMap(piece.rotationCenter);
-            await piece.drawMove();
+            await piece.drawMove(game.pieceSpeed);
             if (byPlayer) piece.canMove = true;
         } else if (key === "ArrowDown") {
             game.finalizeMove();
@@ -32,7 +32,7 @@ export async function movePiece(key, game, byPlayer) {
             piece.rotationCenter = myMap(piece.rotationCenter);
             movedCoordinates = piece.coordinates.map(myMap);
         }
-        await piece.drawMove({ time: fallHeight * piece.fallSpeed });
+        await piece.drawMove((fallHeight * game.pieceSpeed) / 7);
         game.finalizeMove();
     }
 }
