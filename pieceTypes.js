@@ -1,6 +1,6 @@
 export const PIECES = [
     {
-        name: "piece-O",
+        name: "square-O",
         coordinates: [
             [0, 0],
             [1, 0],
@@ -10,7 +10,7 @@ export const PIECES = [
         rotationCenter: [0.5, 0.5],
     },
     {
-        name: "piece-I",
+        name: "square-I",
         coordinates: [
             [0, 0],
             [0, 1],
@@ -20,7 +20,7 @@ export const PIECES = [
         rotationCenter: [0, 2],
     },
     {
-        name: "piece-L",
+        name: "square-L",
         coordinates: [
             [0, 0],
             [0, 1],
@@ -30,7 +30,7 @@ export const PIECES = [
         rotationCenter: [0, 2],
     },
     {
-        name: "piece-J",
+        name: "square-J",
         coordinates: [
             [1, 0],
             [1, 1],
@@ -40,7 +40,7 @@ export const PIECES = [
         rotationCenter: [1, 2],
     },
     {
-        name: "piece-Z",
+        name: "square-Z",
         coordinates: [
             [0, 0],
             [1, 0],
@@ -50,7 +50,7 @@ export const PIECES = [
         rotationCenter: [1, 1],
     },
     {
-        name: "piece-S",
+        name: "square-S",
         coordinates: [
             [1, 0],
             [2, 0],
@@ -60,7 +60,7 @@ export const PIECES = [
         rotationCenter: [1, 1],
     },
     {
-        name: "piece-T",
+        name: "square-T",
         coordinates: [
             [0, 0],
             [1, 0],

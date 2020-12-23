@@ -1,4 +1,4 @@
-import { randEl, rotate } from "./utils.js";
+import { randEl, rotate, antiRotate } from "./utils.js";
 import { unit } from "./dimensions.js";
 import { PIECES } from "./pieceTypes.js";
 
@@ -11,8 +11,8 @@ export class Piece {
         this.squares = [];
         this.length = this.coordinates.length;
         this.canMove = true;
-        this.moveSpeed = 100;
-        this.fallSpeed = 100 / 7;
+        this.moveSpeed = 100; // was 100
+        this.fallSpeed = 100 / 7; // was 100 / 7
     }
 
     get moveMap() {
@@ -21,13 +21,14 @@ export class Piece {
             ArrowRight: ([x, y]) => [x + 1, y],
             ArrowDown: ([x, y]) => [x, y + 1],
             ArrowUp: (coord) => rotate(coord, this.rotationCenter),
+            x: (coord) => antiRotate(coord, this.rotationCenter),
         };
     }
 
     draw(options) {
         for (const coord of this.coordinates) {
             const square = $("<div></div>")
-                .addClass("piece")
+                .addClass("square")
                 .addClass(this.name)
                 .css({
                     left: unit * coord[0],
@@ -41,19 +42,24 @@ export class Piece {
         }
     }
 
-    drawMove(options) {
+    async drawMove(options) {
         const time = options ? options.time : this.moveSpeed;
+        const animations = [];
         for (let i = 0; i < this.length; i++) {
             const [x, y] = this.coordinates[i];
-            this.squares[i].animate({ left: x * unit, top: y * unit }, time);
+            const square = this.squares[i];
+            animations.push(
+                square.animate({ left: x * unit, top: y * unit }, time).promise()
+            );
         }
+        return Promise.all(animations);
     }
 
     drawAsNext() {
         $("#nextPiece").html("");
         for (const [x, y] of this.coordinates) {
             $("<div></div>")
-                .addClass("piece")
+                .addClass("square")
                 .addClass(this.name)
                 .css({
                     left: unit * x,
@@ -71,7 +77,7 @@ export class Piece {
     }
 
     static getSquareAt(x, y) {
-        const piece = $(".piece").filter(function () {
+        const piece = $("#game .square").filter(function () {
             return (
                 parseInt($(this).css("left")) === x * unit &&
                 parseInt($(this).css("top")) === y * unit

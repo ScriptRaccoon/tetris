@@ -1,4 +1,4 @@
-export function movePiece(key, game) {
+export async function movePiece(key, game) {
     const piece = game.piece;
     if (!piece || !piece.canMove) return;
     if (Object.keys(piece.moveMap).includes(key)) {
@@ -8,10 +8,8 @@ export function movePiece(key, game) {
             piece.canMove = false;
             piece.coordinates = movedCoordinates;
             piece.rotationCenter = myMap(piece.rotationCenter);
-            piece.drawMove();
-            setTimeout(() => {
-                piece.canMove = true;
-            }, piece.moveSpeed);
+            await piece.drawMove();
+            piece.canMove = true;
         } else if (key === "ArrowDown") {
             game.finalizeMove();
         }
@@ -26,10 +24,8 @@ export function movePiece(key, game) {
             piece.rotationCenter = myMap(piece.rotationCenter);
             movedCoordinates = piece.coordinates.map(myMap);
         }
-        piece.drawMove({ time: fallHeight * piece.fallSpeed });
-        setTimeout(() => {
-            game.finalizeMove();
-        }, fallHeight * piece.fallSpeed);
+        await piece.drawMove({ time: fallHeight * piece.fallSpeed });
+        game.finalizeMove();
     } else if (key === "Enter") {
         game.init();
     }

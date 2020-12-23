@@ -27,6 +27,12 @@ export function removeAll(list1, list2) {
 export function rotate(coord, origin) {
     const [x, y] = coord;
     const [u, v] = origin;
+    return [u + v - y, x + v - u];
+}
+
+export function antiRotate(coord, origin) {
+    const [x, y] = coord;
+    const [u, v] = origin;
     return [y - v + u, u - x + v];
 }
 
