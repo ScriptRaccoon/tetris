@@ -10,6 +10,8 @@ export class Game {
         this.map = [];
         this.piece = null;
         this.nextPiece = null;
+        this.numberPieces = 0;
+        this.numberLines = 0;
         this.addControls();
         this.init();
     }
@@ -20,13 +22,17 @@ export class Game {
     }
 
     init() {
+        this.stopInterval();
         $(".square").remove();
         this.map = new Array(height).fill(0).map((y) => new Array(width).fill(null));
         this.piece = null;
         this.nextPiece = null;
-        this.blockedCoordinates = [];
+        this.numberPieces = 0;
+        $("#pieceCounter").text(0);
+        this.numberLines = 0;
+        $("#lineCounter").text(0);
         this.addNewPiece();
-        this.startInterval();
+        this.startInterval("Playing");
     }
 
     addControls() {
@@ -35,16 +41,18 @@ export class Game {
         });
     }
 
-    startInterval() {
+    startInterval(message) {
         this.interval = setInterval(
             () => movePiece("ArrowDown", this, false),
             this.intervalSpeed
         );
+        $("#statusMessage").text(message);
     }
 
-    stopInterval() {
+    stopInterval(message) {
         clearInterval(this.interval);
         this.interval = null;
+        $("#statusMessage").text(message);
     }
 
     addNewPiece() {
@@ -57,6 +65,8 @@ export class Game {
         this.piece.draw({ firstTime: true });
         this.nextPiece = new Piece();
         this.nextPiece.drawAsNext();
+        this.numberPieces++;
+        $("#pieceCounter").text(this.numberPieces);
         this.checkGameOver();
     }
 
@@ -65,8 +75,7 @@ export class Game {
             ([x, y]) => this.map[y][x] != null
         );
         if (isGameOver) {
-            window.alert("Game over!");
-            this.stopInterval();
+            this.stopInterval("Gameover!");
         }
     }
 
@@ -87,6 +96,8 @@ export class Game {
         while (y < height) {
             const isFullRow = this.map[y].every((square) => square != null);
             if (isFullRow) {
+                this.numberLines++;
+                $("#lineCounter").text(this.numberLines);
                 for (let x = 0; x < width; x++) {
                     const square = this.map[y][x];
                     square.remove();
@@ -113,11 +124,9 @@ export class Game {
 
     togglePause() {
         if (this.interval) {
-            this.stopInterval();
-            $("#statusMessage").text("Paused");
+            this.stopInterval("Paused");
         } else {
-            this.startInterval();
-            $("#statusMessage").text("Playing");
+            this.startInterval("Playing");
         }
     }
 }

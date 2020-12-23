@@ -3,8 +3,12 @@ export async function movePiece(key, game, byPlayer) {
         game.togglePause();
         return;
     }
+    if (key === "Enter") {
+        game.init();
+        return;
+    }
     const piece = game.piece;
-    if (!piece || !piece.canMove) return;
+    if (!piece || !piece.canMove || !game.interval) return;
     if (Object.keys(piece.moveMap).includes(key)) {
         const myMap = piece.moveMap[key];
         const movedCoordinates = piece.coordinates.map(myMap);
@@ -30,7 +34,5 @@ export async function movePiece(key, game, byPlayer) {
         }
         await piece.drawMove({ time: fallHeight * piece.fallSpeed });
         game.finalizeMove();
-    } else if (key === "Enter") {
-        game.init();
     }
 }

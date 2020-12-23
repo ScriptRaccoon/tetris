@@ -9,23 +9,6 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <aside id="info">
-        <button id="infoButton">
-        </button>
-        <div id="keyInfos">
-            <h4>Keys</h4>
-            <ul>
-                <li><div class="keySymbol">◄</div> moves piece leftwards</li>
-                <li><div class="keySymbol">►</div> moves piece rightwards</li>
-                <li><div class="keySymbol">▼</div> moves piece downwards</li>
-                <li><div class="keySymbol">▲</div> rotates piece clockwise</li>
-                <li><div class="keySymbol">x</div> rotates piece anti-clockwise</li>
-                <li>󠀠<div class="keySymbol">Space</div> smashes piece to the bottom</li>
-                <li>󠀠<div class="keySymbol">Enter</div> restarts game</li>
-                <li>󠀠<div class="keySymbol">p</div> pauses game</li>
-            </ul>
-        </div>
-    </aside>
     
     <header>
         <h1>Tetris</h1>
@@ -41,12 +24,32 @@
             <p>
                 Pieces: <span id="pieceCounter">0</span>
             </p>
+            <p>
+                <span id="infoButton"></span>
+            </p>
+            <p>
+                <div id="keyInfos">
+                    <ul>
+                        <li><div class="keySymbol">◄</div> move piece leftwards</li>
+                        <li><div class="keySymbol">►</div> move piece rightwards</li>
+                        <li><div class="keySymbol">▼</div> moves piece downwards</li>
+                        <li><div class="keySymbol">▲</div> rotate piece clockwise</li>
+                        <li><div class="keySymbol">x</div> rotate piece anti-clockwise</li>
+                        <li>󠀠<div class="keySymbol">Space</div> smash piece</li>
+                        <li>󠀠<div class="keySymbol">Enter</div> restart game</li>
+                        <li>󠀠<div class="keySymbol">p</div> pause game</li>
+                    </ul>
+                </div>
+            </p>
             
         </section>
         <section id="game">
         
         </section>        
-        <section id="nextPiece"></section>
+        <section id="nextPieceContainer">
+            <span>Next Piece</span>
+            <div id="nextPiece"></div>
+        </section>
         
     </main>
     

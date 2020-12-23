@@ -1,10 +1,15 @@
+let keysVisible = false;
+
 export function addInfo() {
-    $("#infoButton").text("Show Keys");
+    $("#infoButton").text("Show Keys >");
     $("#infoButton").click(() => {
         $("#keyInfos").toggle();
-        const text = $("#infoButton").text();
-        $("#infoButton").text(text == "Show Keys" ? "Hide Keys" : "Show Keys");
-        let opacity = parseInt($("main").css("opacity"));
-        $("main").css("opacity", 1.2 - opacity);
+        if (keysVisible) {
+            $("#infoButton").text("Show keys >");
+            keysVisible = false;
+        } else {
+            $("#infoButton").text("Hide keys <");
+            keysVisible = true;
+        }
     });
 }
