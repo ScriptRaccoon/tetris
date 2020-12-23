@@ -31,13 +31,13 @@ export class Game {
 
     addControls() {
         $(window).on("keydown", (e) => {
-            movePiece(e.key, this);
+            movePiece(e.key, this, true);
         });
     }
 
     startInterval() {
         this.interval = setInterval(
-            () => movePiece("ArrowDown", this),
+            () => movePiece("ArrowDown", this, false),
             this.intervalSpeed
         );
     }

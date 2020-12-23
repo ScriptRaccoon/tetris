@@ -1,20 +1,20 @@
-export async function movePiece(key, game) {
+export async function movePiece(key, game, byPlayer) {
     const piece = game.piece;
     if (!piece || !piece.canMove) return;
     if (Object.keys(piece.moveMap).includes(key)) {
         const myMap = piece.moveMap[key];
         const movedCoordinates = piece.coordinates.map(myMap);
         if (movedCoordinates.every((coord) => game.hasFree(coord))) {
-            piece.canMove = false;
+            if (byPlayer) piece.canMove = false;
             piece.coordinates = movedCoordinates;
             piece.rotationCenter = myMap(piece.rotationCenter);
             await piece.drawMove();
-            piece.canMove = true;
+            if (byPlayer) piece.canMove = true;
         } else if (key === "ArrowDown") {
             game.finalizeMove();
         }
     } else if (key === " ") {
-        piece.canMove = false;
+        if (byPlayer) piece.canMove = false;
         const myMap = piece.moveMap["ArrowDown"];
         let movedCoordinates = piece.coordinates.map(myMap);
         let fallHeight = 0;
