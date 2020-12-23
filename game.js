@@ -10,22 +10,9 @@ export class Game {
         this.map = [];
         this.piece = null;
         this.nextPiece = null;
-        this.init();
         this.addControls();
-    }
-
-    logMap() {
-        for (let y = 0; y < height; y++) {
-            let s = y + ": ";
-            for (let x = 0; x < width; x++) {
-                if (this.map[y][x]) {
-                    s += "*";
-                } else {
-                    s += "0";
-                }
-            }
-            console.log(s);
-        }
+        this.init();
+        this.startInterval();
     }
 
     hasFree(coord) {
@@ -34,7 +21,6 @@ export class Game {
     }
 
     init() {
-        this.stopInterval();
         $(".square").remove();
         this.map = new Array(height).fill(0).map((y) => new Array(width).fill(null));
         this.piece = null;
@@ -50,7 +36,10 @@ export class Game {
     }
 
     startInterval() {
-        this.interval = setInterval(movecurrentPiece("ArrowDown"), this.intervalSpeed);
+        this.interval = setInterval(
+            () => movePiece("ArrowDown", this),
+            this.intervalSpeed
+        );
     }
 
     stopInterval() {

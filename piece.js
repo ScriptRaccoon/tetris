@@ -11,8 +11,8 @@ export class Piece {
         this.squares = [];
         this.length = this.coordinates.length;
         this.canMove = true;
-        this.moveSpeed = 100; // was 100
-        this.fallSpeed = 100 / 7; // was 100 / 7
+        this.moveSpeed = 100;
+        this.fallSpeed = 100 / 7;
     }
 
     get moveMap() {
