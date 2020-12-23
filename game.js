@@ -33,6 +33,14 @@ export class Game {
         $("#lineCounter").text(0);
         this.addNewPiece();
         this.startInterval("Playing");
+        this.showLineRecord();
+    }
+
+    showLineRecord() {
+        let record = parseInt(localStorage.getItem("lineRecord") || 0);
+        record = Math.max(record, this.numberLines);
+        localStorage.setItem("lineRecord", record);
+        $("#lineRecordCounter").text(record);
     }
 
     addControls() {
@@ -79,10 +87,11 @@ export class Game {
         }
     }
 
-    async finalizeMove() {
+    finalizeMove() {
         this.freezePiece();
         this.checkTetris();
         this.addNewPiece();
+        this.showLineRecord();
     }
 
     freezePiece() {
