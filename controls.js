@@ -8,8 +8,9 @@ export async function movePiece(key, game, byPlayer) {
         return;
     }
     const piece = game.piece;
-    if (!piece || !piece.canMove || !game.interval) return;
+    if (!piece || !piece.canMove || game.isPaused) return;
     if (Object.keys(piece.moveMap).includes(key)) {
+        // move or rotate
         const myMap = piece.moveMap[key];
         const movedCoordinates = piece.coordinates.map(myMap);
         if (movedCoordinates.every((coord) => game.hasFree(coord))) {
@@ -22,6 +23,7 @@ export async function movePiece(key, game, byPlayer) {
             game.finalizeMove();
         }
     } else if (key === " ") {
+        // fall down
         if (byPlayer) piece.canMove = false;
         const myMap = piece.moveMap["ArrowDown"];
         let movedCoordinates = piece.coordinates.map(myMap);

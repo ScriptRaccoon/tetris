@@ -19,16 +19,17 @@ export class Game {
         this.map = new Array(height).fill(0).map((y) => new Array(width).fill(null));
         this.piece = null;
         this.nextPiece = null;
-        this.intervalSpeed = 300;
+        this.intervalSpeed = 400;
         this.pieceSpeed = 100;
         this.tetrisSpeed = 100;
         this.numberPieces = 0;
         this.numberLines = 0;
-        this.level = 1;
-        this.addNewPiece();
-        this.startInterval("Playing");
         $("#pieceCounter").text(0);
         $("#lineCounter").text(0);
+        this.level = 1;
+        this.addNewPiece();
+        this.isPaused = false;
+        this.startInterval("Playing");
         this.showLineRecord();
     }
 
@@ -46,6 +47,7 @@ export class Game {
     }
 
     startInterval(message) {
+        this.isPaused = false;
         this.interval = setInterval(
             () => movePiece("ArrowDown", this, false),
             this.intervalSpeed
@@ -54,6 +56,7 @@ export class Game {
     }
 
     stopInterval(message) {
+        this.isPaused = true;
         clearInterval(this.interval);
         this.interval = null;
         if (message) $("#statusMessage").text(message);
@@ -66,7 +69,7 @@ export class Game {
         }
         this.piece = this.nextPiece;
         this.piece.translateX(middle);
-        this.piece.draw({ firstTime: true });
+        this.piece.drawFirstTime();
         this.nextPiece = new Piece();
         this.nextPiece.drawAsNext();
         this.numberPieces++;

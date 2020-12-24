@@ -25,7 +25,7 @@ export class Piece {
         };
     }
 
-    draw(options) {
+    drawFirstTime() {
         for (const coord of this.coordinates) {
             const square = $("<div></div>")
                 .addClass("square")
@@ -35,10 +35,7 @@ export class Piece {
                     top: unit * coord[1],
                 })
                 .appendTo("#game");
-
-            if (options && options.firstTime) {
-                this.squares.push(square);
-            }
+            this.squares.push(square);
         }
     }
 
@@ -48,7 +45,9 @@ export class Piece {
             const [x, y] = this.coordinates[i];
             const square = this.squares[i];
             animations.push(
-                square.animate({ left: x * unit, top: y * unit }, time).promise()
+                square
+                    .animate({ left: x * unit, top: y * unit }, time, "linear")
+                    .promise()
             );
         }
         return Promise.all(animations);
