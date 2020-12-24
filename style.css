@@ -30,6 +30,7 @@ main {
 /* key infos */
 
 #keyInfos {
+    display: none;
     position: absolute;
     transform: translateX(calc(7 * var(--unit)));
     width: 330px;
@@ -46,6 +47,12 @@ main {
     margin: 2px 0px;
 }
 
+.keySymbol {
+    text-align: center;
+    display: inline-block;
+    width: 70px;
+}
+
 #infoButton {
     cursor: pointer;
 }
@@ -54,14 +61,29 @@ main {
     color: yellow;
 }
 
-#keyInfos {
-    display: none;
+/* next piece container */
+
+#nextPieceContainer {
+    width: var(--statusWidth);
+    margin-left: var(--unit);
+    text-align: right;
 }
 
-.keySymbol {
-    text-align: center;
-    display: inline-block;
-    width: 70px;
+#nextPiece {
+    margin-left: calc(2 * var(--unit));
+    margin-top: var(--unit);
+    position: relative;
+}
+
+/* status section */
+
+#status {
+    width: var(--statusWidth);
+    margin-right: var(--unit);
+}
+
+#status p {
+    margin: 0px 0px 10px 0px;
 }
 
 /* game */
@@ -136,27 +158,4 @@ main {
 .square-S {
     background-color: rgb(255, 217, 0);
     border: var(--border) solid rgb(195, 167, 5);
-}
-
-/* next piece section */
-
-#nextPieceContainer {
-    width: var(--statusWidth);
-    margin-left: var(--unit);
-    text-align: right;
-}
-
-#nextPiece {
-    margin-left: calc(2 * var(--unit));
-    margin-top: var(--unit);
-    position: relative;
-}
-
-#status {
-    width: var(--statusWidth);
-    margin-right: var(--unit);
-}
-
-#status p {
-    margin: 0px 0px 10px 0px;
 }
