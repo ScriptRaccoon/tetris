@@ -30,9 +30,10 @@ main {
 /* key infos */
 
 #keyInfos {
-    /* border: 1px solid green; */
-    transform: translateX(-160px);
+    position: absolute;
+    transform: translateX(calc(7 * var(--unit)));
     width: 330px;
+    z-index: 10;
 }
 
 #keyInfos ul {
@@ -60,7 +61,7 @@ main {
 .keySymbol {
     text-align: center;
     display: inline-block;
-    width: 50px;
+    width: 70px;
 }
 
 /* game */
@@ -138,9 +139,11 @@ main {
 #nextPieceContainer {
     width: var(--statusWidth);
     margin-left: var(--unit);
+    text-align: right;
 }
 
 #nextPiece {
+    margin-left: calc(2 * var(--unit));
     margin-top: var(--unit);
     position: relative;
 }

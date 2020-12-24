@@ -7,8 +7,10 @@ export function addInfo() {
         if (keysVisible) {
             $("#infoButton").text("Show keys >");
             keysVisible = false;
+            $("#game").css("opacity", 1);
         } else {
             $("#infoButton").text("Hide keys <");
+            $("#game").css("opacity", 0.5);
             keysVisible = true;
         }
     });
