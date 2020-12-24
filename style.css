@@ -85,6 +85,10 @@ main {
     height: var(--unit);
 }
 
+.squareShadow {
+    opacity: 0.2;
+}
+
 /* square O */
 
 .square-O {

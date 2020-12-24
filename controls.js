@@ -8,6 +8,7 @@ export async function movePiece(key, game, byPlayer) {
         return;
     }
     const piece = game.piece;
+
     if (!piece || !piece.canMove || game.isPaused) return;
     if (Object.keys(piece.moveMap).includes(key)) {
         // move or rotate
@@ -25,16 +26,12 @@ export async function movePiece(key, game, byPlayer) {
     } else if (key === " ") {
         // fall down
         if (byPlayer) piece.canMove = false;
-        const myMap = piece.moveMap["ArrowDown"];
-        let movedCoordinates = piece.coordinates.map(myMap);
-        let fallHeight = 0;
-        while (movedCoordinates.every((coord) => game.hasFree(coord))) {
-            fallHeight++;
-            piece.coordinates = movedCoordinates;
-            piece.rotationCenter = myMap(piece.rotationCenter);
-            movedCoordinates = piece.coordinates.map(myMap);
-        }
+        const fallHeight = piece.getFallHeight(game);
+        piece.translateY(fallHeight);
         await piece.drawMove((fallHeight * game.pieceSpeed) / 7);
         game.finalizeMove();
     }
+
+    const fallHeight = piece.getFallHeight(game);
+    piece.drawShadow(fallHeight);
 }

@@ -67,10 +67,42 @@ export class Piece {
         }
     }
 
+    drawShadow(fallHeight) {
+        $(".squareShadow").remove();
+        for (const coord of this.coordinates) {
+            const square = $("<div></div>")
+                .addClass("square")
+                .addClass("squareShadow")
+                .addClass(this.name)
+                .css({
+                    left: unit * coord[0],
+                    top: unit * (coord[1] + fallHeight),
+                })
+                .appendTo("#game");
+        }
+    }
+
+    getFallHeight(game) {
+        let movedCoordinates = this.coordinates.map(([x, y]) => [x, y + 1]);
+        let fallHeight = 0;
+        while (movedCoordinates.every((coord) => game.hasFree(coord))) {
+            fallHeight++;
+            movedCoordinates = movedCoordinates.map(([x, y]) => [x, y + 1]);
+        }
+        return fallHeight;
+    }
+
     translateX(offset) {
         this.rotationCenter[0] += offset;
         for (let i = 0; i < this.length; i++) {
             this.coordinates[i][0] += offset;
+        }
+    }
+
+    translateY(offset) {
+        this.rotationCenter[1] += offset;
+        for (let i = 0; i < this.length; i++) {
+            this.coordinates[i][1] += offset;
         }
     }
 

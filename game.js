@@ -69,6 +69,8 @@ export class Game {
         }
         this.piece = this.nextPiece;
         this.piece.translateX(middle);
+        const fallHeight = this.piece.getFallHeight(this);
+        this.piece.drawShadow(fallHeight);
         this.piece.drawFirstTime();
         this.nextPiece = new Piece();
         this.nextPiece.drawAsNext();
